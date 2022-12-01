@@ -22,6 +22,19 @@ export const getProducts = async (req, res) => {
    }
 }
 
+export const getSingleProduct = async (req, res) => {
+   const { id: _id  } = req.params;
+   if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(404).send("No product with that id.");
+   }
+   try {
+      const singleProduct = await Product.findById(_id);
+      res.status(200).json(singleProduct);
+   } catch (error) {
+      res.status(404).json({message: error});
+   }
+}
+
 export const createProduct = async (req, res) => {
    const newProduct = new Product(req.body);
    try {
